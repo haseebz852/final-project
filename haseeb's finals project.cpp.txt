@@ -1,0 +1,103 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int bedsAvailable = 7;
+
+void header() {
+    cout << "\n=========================================\n";
+    cout << "       HOSPITAL MANAGEMENT SYSTEM        \n";
+    cout << "=========================================\n";
+}
+
+void problemMenu() {
+    cout << "\nSelect Your Problem\n";
+    cout << "-----------------\n";
+    cout << "1. Bone Fracture\n";
+    cout << "2. Heart Problem\n";
+    cout << "3. Fever\n";
+    cout << "4. Accident\n";
+    cout << "5. Headache\n";
+    cout << "6. Stomach Pain\n";
+    cout << "7. Cold & Cough\n";
+    cout << "8. Allergies\n";
+    cout << "-----------------\n";
+    cout << "Enter choice: ";
+}
+
+void saveToFile(string name, int age, char gender, string problem, string doctor, string status) {
+    ofstream file("hospital_records.txt", ios::app);
+    file << "Name: " << name << endl;
+    file << "Age: " << age << endl;
+    file << "Gender: " << (gender == 'M' || gender == 'm' ? "Male" : "Female") << endl;
+    file << "Problem: " << problem << endl;
+    file << "Doctor: " << doctor << endl;
+    file << "Status: " << status << endl;
+    file << "------------------------" << endl;
+    file.close();
+}
+
+void referHospital() {
+    cout << "\n*** ALL BEDS FULL ***\n";
+    cout << "Patient referred to nearby hospitals:\n";
+    cout << "- City Care Hospital\n";
+    cout << "- Al-Shifa Hospital\n";
+    cout << "- Green Valley Hospital\n";
+}
+
+int main() {
+    string name;
+    int age, choice;
+    char gender;
+
+    while (true) {
+        header();
+
+        cout << "Enter Patient Name: ";
+        getline(cin, name);
+
+        cout << "Enter Patient Age: ";
+        cin >> age;
+
+        cout << "Enter Gender (M/F): ";
+        cin >> gender;
+
+        problemMenu();
+        cin >> choice;
+        cin.ignore();   // ✅ sahi jagah
+
+        string problem, doctor;
+
+        switch (choice) {
+        case 1: problem = "Bone Fracture"; doctor = "Orthopedic Doctor"; break;
+        case 2: problem = "Heart Problem"; doctor = "Cardiologist"; break;
+        case 3: problem = "Fever"; doctor = "General Physician"; break;
+        case 4: problem = "Accident"; doctor = "Emergency Specialist"; break;
+        case 5: problem = "Headache"; doctor = "Neurologist"; break;
+        case 6: problem = "Stomach Pain"; doctor = "Gastroenterologist"; break;
+        case 7: problem = "Cold & Cough"; doctor = "General Physician"; break;
+        case 8: problem = "Allergies"; doctor = "Allergist"; break;
+        default:
+            cout << "\nInvalid choice! Try again.\n";
+            continue;
+        }
+
+        cout << "\nDoctor Assigned: " << doctor << endl;
+
+        if (bedsAvailable > 0) {
+            bedsAvailable--;
+            cout << "Bed Status: Assigned\n";
+            cout << "Beds Remaining: " << bedsAvailable << endl;
+            saveToFile(name, age, gender, problem, doctor, "Admitted");
+        }
+        else {
+            referHospital();
+            saveToFile(name, age, gender, problem, doctor, "Referred");
+        }
+
+        cout << "\n-----------------------------------------\n";
+    }
+
+    return 0;
+}
