@@ -65,7 +65,7 @@ int main() {
 
         problemMenu();
         cin >> choice;
-        cin.ignore();   // ✅ sahi jagah
+        cin.ignore();   
 
         string problem, doctor;
 
@@ -101,3 +101,4 @@ int main() {
 
     return 0;
 }
+
